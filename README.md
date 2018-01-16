@@ -4,7 +4,7 @@ Data partitioning algorithm for reduction of complexity and improvement of metag
 
 ## Installation
 
-To clone the repository, type `git clone https://github.com/mirand863/gcsplit.git`
+To clone the repository, type `cd` and `git clone https://github.com/mirand863/gcsplit.git`
 To compile just type `cd gcsplit` and `make`
 GCSplit can be added to the environment variable $PATH through the command `echo 'export PATH=~/gcsplit/bin/Debug:$PATH' >> ~/.bashrc` and `source ~/.bashrc`
 
