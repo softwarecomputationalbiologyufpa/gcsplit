@@ -37,7 +37,7 @@ To see the usage just type `gcsplit`
 ~~~
 GCSplit 1.0
 
-Partitions paired fastq files, runs the assembly and saves results
+Partitions paired FASTQ files, runs the assembly and saves results
 
 Usage: gcsplit r1 r2 threads outputdir
 
