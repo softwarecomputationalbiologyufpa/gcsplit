@@ -12,7 +12,7 @@ GCSplit can be added to the environment variable $PATH through the command `echo
 
 ## Dependencies
 
-GCSplit depends on KmerStream and SPAdes in order to automatically perform assemblies.
+GCSplit requires GCC version 4.4.7 or higher, the library OpenMP and the software KmerStream and metaSPAdes in order to automatically perform assemblies.
 
 To download SPAdes to your home directory, type `cd` and `wget http://cab.spbu.ru/files/release3.11.1/SPAdes-3.11.1-Linux.tar.gz`
 
