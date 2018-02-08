@@ -36,7 +36,7 @@ void GCSplit::load(string file, vector<Fastq> &sequences) {
 void GCSplit::loadFiles() {
     cout << "Reading fastq files... ";
     load(r1, left);
-    load(r1, right);
+    load(r2, right);
     cout << "OK" << endl;
 }
 
