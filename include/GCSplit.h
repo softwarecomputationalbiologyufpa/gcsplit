@@ -6,6 +6,7 @@
 #include <vector>
 #include <parallel/algorithm>
 #include <omp.h>
+#include <sstream>
 #include "Utils.h"
 #include "Fastq.h"
 
@@ -20,20 +21,16 @@ class GCSplit {
         string basename;
         vector<Fastq> left;
         vector<Fastq> right;
-        int firstQuartile;
-        int median;
-        int thirdQuartile;
+        int partitions;
         Utils utils;
         void load(string file, vector<Fastq> &sequences);
         void loadFiles();
         void computeGCContent();
         void sortSequences();
-        int computeHalfIndex(int vectorSize);
-        void computeQuartiles();
         void saveFile(int beginning, int ending, string prefix, string suffix);
         void saveResults();
     public:
-        GCSplit(string r1, string r2, int threads, string outputdir);
+        GCSplit(string r1, string r2, int partitions, int threads, string outputdir);
         void split();
 };
 

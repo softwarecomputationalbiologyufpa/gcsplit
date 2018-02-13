@@ -1,8 +1,9 @@
 #include "GCSplit.h"
 
-GCSplit::GCSplit(string r1, string r2, int threads, string outputdir) {
+GCSplit::GCSplit(string r1, string r2, int partitions, int threads, string outputdir) {
     this->r1 = r1;
     this->r2 = r2;
+    this->partitions = partitions;
     this->threads = threads;
     omp_set_dynamic(0);
     omp_set_num_threads(threads);
@@ -38,6 +39,7 @@ void GCSplit::loadFiles() {
     load(r1, left);
     load(r2, right);
     cout << "OK" << endl;
+    cout << left.size() << " sequences loaded" << endl;
 }
 
 void GCSplit::computeGCContent() {
@@ -56,23 +58,6 @@ void GCSplit::sortSequences() {
     cout << "OK" << endl;
 }
 
-int GCSplit::computeHalfIndex(int vectorSize) {
-    int half;
-
-    if(vectorSize % 2 == 0) {
-        half = (int)((vectorSize - 1) / 2);
-    } else {
-        half = vectorSize / 2;
-    }
-    return half;
-}
-
-void GCSplit::computeQuartiles() {
-    median = computeHalfIndex(left.size());
-    firstQuartile = computeHalfIndex(median);
-    thirdQuartile = median + firstQuartile + 1;
-}
-
 void GCSplit::saveFile(int beginning, int ending, string prefix, string suffix) {
     ofstream pair1(string(prefix + "_r1" + suffix).c_str());
     ofstream pair2(string(prefix + "_r2" + suffix).c_str());
@@ -84,20 +69,28 @@ void GCSplit::saveFile(int beginning, int ending, string prefix, string suffix) 
     pair2.close();
 }
 
-
 void GCSplit::saveResults() {
-    cout << "Saving results... ";
-    saveFile(0, firstQuartile, basename + string("_1"), string(".fastq"));
-    saveFile(firstQuartile + 1, median, basename + string("_2"), string(".fastq"));
-    saveFile(median + 1, thirdQuartile, basename + string("_3"), string(".fastq"));
-    saveFile(thirdQuartile + 1, left.size() - 1, basename + string("_4"), string(".fastq"));
-    cout << "OK" << endl;
+    cout << "Saving results... " << endl;
+    int length = left.size() / partitions;
+    int remaining = left.size() % partitions;
+    int beginning = 0;
+    int ending = 0;
+    int partitionNumber = 1;
+    for(int i = 0; i < min(partitions, (int)left.size()); ++i) {
+        ending += (remaining > 0) ? (length + !!(remaining--)) : length;
+        cout << "partitioning from " << beginning << " to " << (ending - 1) << endl;
+        stringstream pNumber;
+        pNumber << partitionNumber;
+        saveFile(beginning, ending - 1, basename + string("_") + pNumber.str(), string(".fastq"));
+        beginning = ending;
+        partitionNumber++;
+    }
+    cout << "Finished!" << endl;
 }
 
 void GCSplit::split() {
     loadFiles();
     computeGCContent();
     sortSequences();
-    computeQuartiles();
     saveResults();
 }

@@ -16,6 +16,7 @@ class MetaSpades {
         string r1;
         string r2;
         int threads;
+        int partitions;
         vector<int> kmers;
         string gcsplitInput;
         string metaspadesInput;
@@ -26,7 +27,7 @@ class MetaSpades {
         void assembleSlices();
         void mergeAssemblies();
     public:
-        MetaSpades(int threads, vector<int> kmers, string outputdir);
+        MetaSpades(int threads, int partitions, vector<int> kmers, string outputdir);
         void run();
 };
 

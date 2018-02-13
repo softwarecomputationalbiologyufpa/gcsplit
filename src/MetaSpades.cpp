@@ -1,7 +1,8 @@
 #include "MetaSpades.h"
 
-MetaSpades::MetaSpades(int threads, vector<int> kmers, string outputdir) {
+MetaSpades::MetaSpades(int threads, int partitions, vector<int> kmers, string outputdir) {
     this->threads = threads;
+    this->partitions = partitions;
     this->kmers = kmers;
     this->outputdir = outputdir;
     gcsplitInput = outputdir + "/gcsplit/slice_";
@@ -10,7 +11,7 @@ MetaSpades::MetaSpades(int threads, vector<int> kmers, string outputdir) {
 }
 
 void MetaSpades::assembleSlices() {
-    for(int i = 1; i <= 4; i++) {
+    for(int i = 1; i <= partitions; i++) {
         stringstream command;
         cout << "Running MetaSpades..." << endl;
         int returnValue;
@@ -31,7 +32,7 @@ void MetaSpades::assembleSlices() {
 }
 
 void MetaSpades::mergeAssemblies() {
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < partitions; i++) {
         FastaFile slice;
         stringstream input;
         input << outputdir << "/metaspades/slice_" << (i + 1) << "/contigs.fasta";
@@ -42,13 +43,13 @@ void MetaSpades::mergeAssemblies() {
     }
 
     unsigned long long int maxN50 = slices[0].getN50();
-    maxN50 = max(maxN50, slices[1].getN50());
-    maxN50 = max(maxN50, slices[2].getN50());
-    maxN50 = max(maxN50, slices[3].getN50());
+    for(int i = 1; i < partitions; i++) {
+        maxN50 = max(maxN50, slices[i].getN50());
+    }
 
     vector<int> smallerN50;
-    int largestN50;
-    for(int i = 0; i < 4; i++) {
+    int largestN50 = 0;
+    for(int i = 0; i < partitions; i++) {
         if(slices[i].getN50() == maxN50) {
             largestN50 = i + 1;
         } else {
@@ -62,9 +63,9 @@ void MetaSpades::mergeAssemblies() {
     command << "spades.py \\" << endl;
     command << "-1 " << gcsplitInput << largestN50 << "_r1.fastq \\" << endl;
     command << "-2 " << gcsplitInput << largestN50 << "_r2.fastq \\" << endl;
-    command << "--s1 " << metaspadesInput << smallerN50[0] << "/contigs.fasta \\" << endl;
-    command << "--s2 " << metaspadesInput << smallerN50[1] << "/contigs.fasta \\" << endl;
-    command << "--s3 " << metaspadesInput << smallerN50[2] << "/contigs.fasta \\" << endl;
+    for(int i = 1; i < partitions; i++) {
+        command << "--s1 " << metaspadesInput << smallerN50[i - 1] << "/contigs.fasta \\" << endl;
+    }
     command << "--trusted-contigs " << metaspadesInput << largestN50 << "/contigs.fasta \\" << endl;
     command << "--only-assembler \\" << endl;
     command << "-t " << threads << " \\" << endl;
