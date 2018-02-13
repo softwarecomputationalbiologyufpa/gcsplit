@@ -35,14 +35,16 @@ To test that KmerStream is running correctly, type `KmerStream`
 To see the usage just type `gcsplit`
 
 ~~~
-GCSplit 1.0
+GCSplit v1.1
 
-Partitions paired FASTQ files, runs the assembly and saves results
+A software to partition paired FASTQ files
 
-Usage: gcsplit r1 r2 threads outputdir
+Usage: gcsplit r1 r2 partitions k-mers threads outputdir
 
-r1          File with forward reads
-r2          File with reverse reads
-threads     Number of threads
-outputdir   Specify the output directory
+r1		File with forward reads
+r2		File with reverse reads
+partitions	Number of partitions
+k-mers		Number of k-mers to run the assembly
+threads		Number of threads
+outputdir	Specify the output directory
 ~~~
