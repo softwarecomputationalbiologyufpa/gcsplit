@@ -55,8 +55,7 @@ If you use GCSplit, please cite:
 
 >Miranda, F.M., Batista, C., Silva, A., Morais, J., Neto, N. and Ramos, R., 2018. Improving Metagenomic Assemblies Through Data Partitioning: a GC content approach. bioRxiv, p.261784.
 
-.. code-block:: tex
-
+```
 @article{miranda2018improving,
   title={Improving Metagenomic Assemblies Through Data Partitioning: a GC content approach},
   author={Miranda, Fabio Malcher and Batista, Cassio and Silva, Artur and Morais, Jefferson and Neto, Nelson and Ramos, Rommel},
@@ -65,3 +64,4 @@ If you use GCSplit, please cite:
   year={2018},
   publisher={Cold Spring Harbor Laboratory}
 }
+```
