@@ -11,4 +11,3 @@ git clone https://github.com/pmelsted/KmerStream.git
 cd KmerStream
 make
 echo 'export PATH='$WORKDIR'/KmerStream:$PATH' >> ~/.bashrc
-source ~/.bashrc
