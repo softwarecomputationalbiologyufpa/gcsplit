@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <cstdlib>
+#include "Arguments.h"
 #include "Utils.h"
 
 using namespace std;
@@ -13,8 +14,11 @@ using namespace std;
 
 class MetaSpades {
     private:
-        string r1;
-        string r2;
+        string forward;
+        string reverse;
+        string single;
+        bool ionTorrent;
+        bool wholeDataset;
         int threads;
         int partitions;
         vector<int> kmers;
@@ -26,8 +30,9 @@ class MetaSpades {
         vector<FastaFile> slices;
         void assembleSlices();
         void mergeAssemblies();
+        void mergeAssembliesWithWholeDataset();
     public:
-        MetaSpades(int threads, int partitions, vector<int> kmers, string outputdir);
+        MetaSpades(Arguments &arguments);
         void run();
 };
 

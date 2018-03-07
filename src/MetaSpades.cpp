@@ -1,10 +1,15 @@
 #include "MetaSpades.h"
 
-MetaSpades::MetaSpades(int threads, int partitions, vector<int> kmers, string outputdir) {
-    this->threads = threads;
-    this->partitions = partitions;
-    this->kmers = kmers;
-    this->outputdir = outputdir;
+MetaSpades::MetaSpades(Arguments &arguments) {
+    this->forward = arguments.getForward();
+    this->reverse = arguments.getReverse();
+    this->single = arguments.getSingle();
+    this->threads = arguments.getThreads();
+    this->partitions = arguments.getPartitions();
+    this->kmers = arguments.getBestKmers();
+    this->ionTorrent = arguments.isIonTorrent();
+    this->wholeDataset = arguments.useWholeDataset();
+    this->outputdir = arguments.getOutputDir();
     gcsplitInput = outputdir + "/gcsplit/slice_";
     metaspadesInput = outputdir + "/metaspades/slice_";
     utils.createDir(outputdir + "/metaspades");
@@ -13,11 +18,19 @@ MetaSpades::MetaSpades(int threads, int partitions, vector<int> kmers, string ou
 void MetaSpades::assembleSlices() {
     for(int i = 1; i <= partitions; i++) {
         stringstream command;
-        cout << "Running MetaSpades..." << endl;
+        cerr << "Running MetaSpades..." << endl;
         int returnValue;
         command << "metaspades.py \\" << endl;
-        command << "-1 " << gcsplitInput << i << "_r1.fastq \\" << endl;
-        command << "-2 " << gcsplitInput << i << "_r2.fastq \\" << endl;
+        if(forward.length() > 0 && reverse.length() > 0) {
+            command << "-1 " << gcsplitInput << i << "_r1.fastq \\" << endl;
+            command << "-2 " << gcsplitInput << i << "_r2.fastq \\" << endl;
+        }
+        if(single.length() > 0) {
+            command << "-s " << gcsplitInput << i << ".fastq \\" << endl;
+        }
+        if(ionTorrent) {
+            command << "--iontorrent \\" << endl;
+        }
         command << "-t " << threads << " \\" << endl;
         command << "-k ";
         for(unsigned int j = 0; j < kmers.size() - 1; j++) {
@@ -25,9 +38,9 @@ void MetaSpades::assembleSlices() {
         }
         command << kmers[kmers.size() - 1] << " \\" << endl;
         command << "-o " << outputdir << "/metaspades/slice_" << i << endl;
-        cout << command.str() << endl;
+        cerr << command.str() << endl;
         returnValue = system(command.str().c_str());
-        cout << "MetaSpades return code " << returnValue << endl;
+        cerr << "MetaSpades return code " << returnValue << endl;
     }
 }
 
@@ -58,7 +71,7 @@ void MetaSpades::mergeAssemblies() {
     }
 
     stringstream command;
-    cout << "Running Spades..." << endl;
+    cerr << "Running Spades..." << endl;
     int returnValue;
     command << "spades.py \\" << endl;
     command << "-1 " << gcsplitInput << largestN50 << "_r1.fastq \\" << endl;
@@ -75,12 +88,57 @@ void MetaSpades::mergeAssemblies() {
     }
     command << kmers[kmers.size() - 1] << " \\" << endl;
     command << "-o " << outputdir << "/metaspades/merge" << endl;
-    cout << command.str() << endl;
+    cerr << command.str() << endl;
     returnValue = system(command.str().c_str());
-    cout << "MetaSpades return code " << returnValue << endl;
+    cerr << "MetaSpades return code " << returnValue << endl;
+}
+
+void MetaSpades::mergeAssembliesWithWholeDataset() {
+
+	stringstream cat;
+	int returnValue;
+	cat << "cat";
+	for(int i = 1; i <= partitions; i++) {
+		cat << " " << metaspadesInput << i << "/contigs.fasta";
+	}
+	cat << " > " << outputdir << "/metaspades/cat.fasta" << endl;
+
+	cerr << cat.str() << endl;
+	returnValue = system(cat.str().c_str());
+	cerr << "cat return code " << returnValue << endl;
+
+    stringstream command;
+    cerr << "Running Spades..." << endl;
+    command << "spades.py \\" << endl;
+    if(forward.length() > 0 && reverse.length() > 0) {
+        command << "-1 " << forward << " \\" << endl;
+        command << "-2 " << reverse << " \\" << endl;
+    }
+    if(single.length() > 0) {
+        command << "-s " << single << " \\" << endl;
+    }
+    if(ionTorrent) {
+        command << "--iontorrent \\" << endl;
+    }
+    command << "--trusted-contigs " << outputdir << "/metaspades/cat.fasta \\" << endl;
+    command << "--only-assembler \\" << endl;
+    command << "-t " << threads << " \\" << endl;
+    command << "-k ";
+    for(unsigned int j = 0; j < kmers.size() - 1; j++) {
+        command << kmers[j] << ",";
+    }
+    command << kmers[kmers.size() - 1] << " \\" << endl;
+    command << "-o " << outputdir << "/metaspades/merge" << endl;
+    cerr << command.str() << endl;
+    returnValue = system(command.str().c_str());
+    cerr << "MetaSpades return code " << returnValue << endl;
 }
 
 void MetaSpades::run() {
     assembleSlices();
-    mergeAssemblies();
+    if(wholeDataset) {
+        mergeAssembliesWithWholeDataset();
+    } else {
+        mergeAssemblies();
+    }
 }

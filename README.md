@@ -13,18 +13,31 @@ To install GCSplit and its dependencies, type `cd gcsplit`, `bash install.sh` an
 To see the usage just type `gcsplit`
 
 ~~~
-GCSplit v1.1
+GCSplit v1.2
 
 A software to partition paired FASTQ files
 
-Usage: gcsplit r1 r2 partitions k-mers threads outputdir
+Usage: ./bin/Debug/gcsplit [options] -o <output_dir> 
 
-r1		File with forward reads
-r2		File with reverse reads
-partitions	Number of partitions
-k-mers		Number of k-mers to run the assembly
-threads		Number of threads
-outputdir	Specify the output directory
+Basic options:
+    -o/--output <output_dir>    Folder to store all the files generated during the assembly (required).
+    -p/--partitions <int>       Number of partitions [default: 16]
+    -w/--whole                  Use whole dataset to merge [default: off]
+    --iontorrent                This flag is required for IonTorrent data.
+    -h/--help                   Prints this usage message.
+    -v/--version                Prints version info
+
+Input data:
+    -f/--forward <filename>     File with forward paired-end reads.
+    -r/--reverse <filename>     File with reverse paired-end reads.
+    -s/--single <filename>      File with unpaired reads.
+
+Advanced options:
+    -t/--threads <int>          Number of threads [default: 4]
+    -k/--kmers <int>            Number of kmers to run the assembly [default: 3]
+
+Please, report bugs to: miranda.fmm@gmail.com
+Software homepage: <https://github.com/mirand863/gcsplit>
 ~~~
 
 ## Citation

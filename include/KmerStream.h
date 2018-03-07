@@ -7,6 +7,7 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include "Arguments.h"
 #include "Utils.h"
 #include "TSV.h"
 
@@ -14,18 +15,19 @@ using namespace std;
 
 class KmerStream {
     private:
-        string r1;
-        string r2;
+        string forward;
+        string reverse;
+        string single;
         int threads;
-        string outputdir;
+        string outputDir;
         vector<int> testedKmers;
         string tsvFile;
         Utils utils;
         void calculateTestedKmers();
         void runCommand();
     public:
-        KmerStream(string r1, string r2, int threads, string outputdir);
-        vector<int> getBestK(int kmers);
+        KmerStream(Arguments &arguments);
+        void getBestKmers(Arguments &arguments);
 };
 
 #endif // KMERSTREAM_H

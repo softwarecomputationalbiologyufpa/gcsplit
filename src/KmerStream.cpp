@@ -1,14 +1,15 @@
 #include "KmerStream.h"
 
-KmerStream::KmerStream(string r1, string r2, int threads, string outputdir) {
-    this->r1 = r1;
-    this->r2 = r2;
-    this->threads = threads;
-    this->outputdir = outputdir;
-    utils.createDir(outputdir);
-    utils.createDir(outputdir + "/kmerstream");
+KmerStream::KmerStream(Arguments &arguments) {
+    this->forward = arguments.getForward();
+    this->reverse = arguments.getReverse();
+    this->single = arguments.getSingle();
+    this->threads = arguments.getThreads();
+    this->outputDir = arguments.getOutputDir();
+    utils.createDir(outputDir);
+    utils.createDir(outputDir + "/kmerstream");
     calculateTestedKmers();
-    tsvFile = outputdir + "/kmerstream/bestkmers.tsv";
+    tsvFile = outputDir + "/kmerstream/bestkmers.tsv";
 }
 
 void KmerStream::calculateTestedKmers() {
@@ -19,7 +20,7 @@ void KmerStream::calculateTestedKmers() {
 
 void KmerStream::runCommand() {
     stringstream command;
-    cout << "Running KmerStream..." << endl;
+    cerr << "Running KmerStream..." << endl;
     int returnValue;
     command << "KmerStream \\" << endl;
     command << "-k ";
@@ -30,14 +31,19 @@ void KmerStream::runCommand() {
     command << "-o " << tsvFile << " \\" << endl;
     command << "-t " << threads << " \\" << endl;
     command << "--tsv \\" << endl;
-    command << r1 << " \\" << endl;
-    command << r2 << endl;
-    cout << command.str() << endl;
+    if(forward.length() > 0 && reverse.length() > 0) {
+        command << forward << " \\" << endl;
+        command << reverse << " \\" << endl;
+    }
+    if(single.length() > 0) {
+        command << single << " \\" << endl;
+    }
+    cerr << command.str() << endl;
     returnValue = system(command.str().c_str());
-    cout << "Kmerstream returned code " << returnValue << endl << endl;
+    cerr << "Kmerstream returned code " << returnValue << endl << endl;
 }
 
-vector<int> KmerStream::getBestK(int kmers) {
+void KmerStream::getBestKmers(Arguments &arguments) {
     runCommand();
     ifstream fin(tsvFile.c_str());
     vector<int> bestK;
@@ -56,11 +62,14 @@ vector<int> KmerStream::getBestK(int kmers) {
             kmerstreamOutput.push_back(tsv);
         }
         sort(kmerstreamOutput.begin(), kmerstreamOutput.end());
-        for(int i = 0; i < kmers; i++) {
+        cerr << "Best kmers: ";
+        for(int i = 0; i < arguments.getNumberOfKmers(); i++) {
             bestK.push_back(kmerstreamOutput[i].get_k());
+            cerr << kmerstreamOutput[i].get_k() << ", ";
         }
+        cerr << endl;
+        arguments.setBestKmers(bestK);
     } else {
         cerr << "Error opening file " << tsvFile << endl;
     }
-    return bestK;
 }

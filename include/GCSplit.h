@@ -7,6 +7,7 @@
 #include <parallel/algorithm>
 #include <omp.h>
 #include <sstream>
+#include "Arguments.h"
 #include "Utils.h"
 #include "Fastq.h"
 
@@ -14,23 +15,27 @@ using namespace std;
 
 class GCSplit {
     private:
-        string r1;
-        string r2;
+        string forward;
+        string reverse;
+        string single;
         int threads;
-        string outputdir;
+        string outputDir;
         string basename;
         vector<Fastq> left;
         vector<Fastq> right;
+        vector<Fastq> sing;
         int partitions;
         Utils utils;
         void load(string file, vector<Fastq> &sequences);
         void loadFiles();
         void computeGCContent();
         void sortSequences();
-        void saveFile(int beginning, int ending, string prefix, string suffix);
-        void saveResults();
+        void savePairedFiles(int beginning, int ending, string prefix, string suffix);
+        void savePairedResults();
+        void saveSingleFile(int beginning, int ending, string prefix, string suffix);
+        void saveSingleResults();
     public:
-        GCSplit(string r1, string r2, int partitions, int threads, string outputdir);
+        GCSplit(Arguments &arguments);
         void split();
 };
 
