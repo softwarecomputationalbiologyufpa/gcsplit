@@ -44,17 +44,17 @@ Software homepage: <https://github.com/mirand863/gcsplit>
 
 If you use GCSplit, please cite:
 
->Miranda, F.M., Batista, C., Silva, A., Morais, J., Neto, N. and Ramos, R., 2018. Improving Metagenomic Assemblies Through Data Partitioning: a GC content approach. bioRxiv, p.261784.
+>Miranda, F., Batista, C., Silva, A., Morais, J., Neto, N. and Ramos, R., 2018. Improving Metagenomic Assemblies Through Data Partitioning: A GC Content Approach. In: Rojas I., Ortuño F. (eds) Bioinformatics and Biomedical Engineering. IWBBIO 2018. Lecture Notes in Computer Science, vol 10813. Springer, Cham.
 
 ```
-@article{gcsplit2018,
+@inproceedings{miranda2018improving,
   title={Improving Metagenomic Assemblies Through Data Partitioning: a GC content approach},
-  author={Miranda, Fabio Malcher and Batista, Cassio and Silva, Artur and Morais, Jefferson and Neto, Nelson and Ramos, Rommel},
-  journal={bioRxiv},
-  pages={261784},
+  author={Miranda, F{\'a}bio and Batista, Cassio and Silva, Artur and Morais, Jefferson and Neto, Nelson and Ramos, Rommel},
+  booktitle={International Conference on Bioinformatics and Biomedical Engineering},
+  pages={415--425},
   year={2018},
-  publisher={Cold Spring Harbor Laboratory},
-  doi={10.1101/261784},
-  url={https://doi.org/10.1101/261784}
+  publisher={Springer},
+  doi={10.1007/978-3-319-78723-7_36},
+  url={https://doi.org/10.1007/978-3-319-78723-7_36}
 }
 ```
