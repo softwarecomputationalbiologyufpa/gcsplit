@@ -48,13 +48,16 @@ If you use GCSplit, please cite:
 
 ```
 @inproceedings{miranda2018improving,
-  title={Improving Metagenomic Assemblies Through Data Partitioning: a GC content approach},
-  author={Miranda, F{\'a}bio and Batista, Cassio and Silva, Artur and Morais, Jefferson and Neto, Nelson and Ramos, Rommel},
-  booktitle={International Conference on Bioinformatics and Biomedical Engineering},
-  pages={415--425},
-  year={2018},
-  publisher={Springer},
+  author="Miranda, F{\'a}bio and Batista, Cassio and Silva, Artur and Morais, Jefferson and Neto, Nelson and Ramos, Rommel",
+  editor="Rojas, Ignacio and Ortu{\~{n}}o, Francisco",
+  title="Improving Metagenomic Assemblies Through Data Partitioning: A GC Content Approach",
+  booktitle="Bioinformatics and Biomedical Engineering",
+  year="2018",
+  publisher="Springer International Publishing",
+  address="Cham",
+  pages="415--425",
   doi={10.1007/978-3-319-78723-7_36},
-  url={https://doi.org/10.1007/978-3-319-78723-7_36}
+  url={https://doi.org/10.1007/978-3-319-78723-7_36},
+  isbn="978-3-319-78723-7"
 }
 ```
