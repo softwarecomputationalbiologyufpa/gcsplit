@@ -1,6 +1,6 @@
 # GCSplit
 
-Data partitioning algorithm for reduction of complexity and improvement of metagenomic assemblies.
+Data partitioning algorithm for reduction of complexity and improvement of genomic and metagenomic assemblies.
 
 ## Installation
 
@@ -24,6 +24,7 @@ Basic options:
     -p/--partitions <int>       Number of partitions [default: 16]
     -w/--whole                  Use whole dataset to merge [default: off]
     --iontorrent                This flag is required for IonTorrent data.
+    --meta                      This flag is required for metagenomic datasets.
     -h/--help                   Prints this usage message.
     -v/--version                Prints version info
 
