@@ -20,22 +20,24 @@ A software to partition paired FASTQ files
 Usage: ./bin/Debug/gcsplit [options] -o <output_dir> 
 
 Basic options:
-    -o/--output <output_dir>    Folder to store all the files generated during the assembly (required).
-    -p/--partitions <int>       Number of partitions [default: 16]
-    -w/--whole                  Use whole dataset to merge [default: off]
-    --iontorrent                This flag is required for IonTorrent data.
-    --meta                      This flag is required for metagenomic datasets.
-    -h/--help                   Prints this usage message.
-    -v/--version                Prints version info
+    -o/--output <output_dir>           Folder to store all the files generated during the assembly (required).
+    -p/--partitions <int>              Number of partitions [default: 16]
+    -w/--whole                         Use whole dataset to merge [default: off]
+    --iontorrent                       This flag is required for IonTorrent data.
+    --meta                             This flag is required for metagenomic datasets.
+    -h/--help                          Prints this usage message.
+    -v/--version                       Prints version info
 
 Input data:
-    -f/--forward <filename>     File with forward paired-end reads.
-    -r/--reverse <filename>     File with reverse paired-end reads.
-    -s/--single <filename>      File with unpaired reads.
+    -f/--forward <filename>            File with forward paired-end reads.
+    -r/--reverse <filename>            File with reverse paired-end reads.
+    -s/--single <filename>             File with unpaired reads.
 
 Advanced options:
-    -t/--threads <int>          Number of threads [default: 4]
-    -k/--kmers <int>            Number of kmers to run the assembly [default: 3]
+    -t/--threads <int>                 Number of threads [default: 4]
+    --skip-kmerstream <int,int,...>    Skip KmerStream and run SPAdes or MetaSPAdes with specified k-mer(s)
+                                       K-mer value(s) must be odd and less than 128
+    -k/--kmers <int>                   Number of kmers to run the assembly [default: 3]
 
 Please, report bugs to: miranda.fmm@gmail.com
 Software homepage: <https://github.com/mirand863/gcsplit>
