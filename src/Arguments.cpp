@@ -1,7 +1,7 @@
 #include "Arguments.h"
 
 void displayHelp(char *argv[]) {
-    cerr << endl << "GCSplit v1.2" << endl << endl;
+    cerr << endl << "GCSplit v1.3" << endl << endl;
     cerr << "A software to partition paired FASTQ files" << endl << endl;
 	cerr << "Usage: " << argv[0] << " [options] -o <output_dir> " << endl << endl;
 	cerr << "Basic options:" << endl;
@@ -9,6 +9,7 @@ void displayHelp(char *argv[]) {
     cerr << "    -p/--partitions <int>       Number of partitions [default: 16]" << endl;
     cerr << "    -w/--whole                  Use whole dataset to merge [default: off]" << endl;
     cerr << "    --iontorrent                This flag is required for IonTorrent data." << endl;
+    cerr << "    --meta                      This flag is required for metagenomic datasets." << endl;
     cerr << "    -h/--help                   Prints this usage message." << endl;
     cerr << "    -v/--version                Prints version info" << endl << endl;
 	cerr << "Input data:" << endl;
@@ -23,7 +24,7 @@ void displayHelp(char *argv[]) {
 }
 
 void printVersion(char *argv[]) {
-	cerr << endl << "GCSplit v1.2" << endl << endl;
+	cerr << endl << "GCSplit v1.3" << endl << endl;
 	cerr << "Copyright (C) 2018 Federal University of Para." << endl;
 	cerr << "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>." << endl;
 	cerr << "This is free software: you are free to change and redistribute it." << endl;
@@ -43,6 +44,7 @@ Arguments::Arguments(int argc, char *argv[]) {
     threads = 4;
     wholeDataset = false;
     ionTorrent = false;
+    meta = false;
     outputDir = "";
 
 	for(int i = 1; i < argc; i++) {
@@ -79,6 +81,9 @@ Arguments::Arguments(int argc, char *argv[]) {
 			continue;
 		} else if (argument == "--iontorrent") {
 			ionTorrent = true;
+			continue;
+		} else if (argument == "--meta") {
+			meta = true;
 			continue;
 		}
 	}
@@ -143,6 +148,10 @@ bool Arguments::useWholeDataset() {
 
 bool Arguments::isIonTorrent() {
     return ionTorrent;
+}
+
+bool Arguments::isMeta() {
+	return meta;
 }
 
 string Arguments::getOutputDir() {

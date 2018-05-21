@@ -5,6 +5,7 @@
 #include "KmerStream.h"
 #include "GCSplit.h"
 #include "MetaSpades.h"
+#include "Spades.h"
 
 using namespace std;
 
@@ -16,8 +17,14 @@ int main(int argc, char *argv[]) {
         kmerStream.getBestKmers(arguments);
         GCSplit gcsplit(arguments);
         gcsplit.split();
-        MetaSpades metaspades(arguments);
-        metaspades.run();
+        if(arguments.isMeta()) {
+			cout << "run metaspades" << endl;
+			MetaSpades metaspades(arguments);
+			metaspades.run();
+		} else {
+			Spades spades(arguments);
+			spades.run();
+		}
     }
 
     return 0;

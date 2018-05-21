@@ -24,6 +24,7 @@ class Arguments {
         vector<int> bestKmers;
         bool wholeDataset;
         bool ionTorrent;
+        bool meta;
         int threads;
         string outputDir;
 	public:
@@ -41,6 +42,7 @@ class Arguments {
         int getThreads();
         bool useWholeDataset();
         bool isIonTorrent();
+        bool isMeta();
         string getOutputDir();
 };
 

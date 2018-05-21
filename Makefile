@@ -35,9 +35,9 @@ OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
 OUT_RELEASE = bin/Release/gcsplit
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/src/Utils.o $(OBJDIR_DEBUG)/src/TSV.o $(OBJDIR_DEBUG)/src/MetaSpades.o $(OBJDIR_DEBUG)/src/KmerStream.o $(OBJDIR_DEBUG)/src/GCSplit.o $(OBJDIR_DEBUG)/src/Fastq.o $(OBJDIR_DEBUG)/src/FastaFile.o $(OBJDIR_DEBUG)/src/Fasta.o $(OBJDIR_DEBUG)/src/Arguments.o
+OBJ_DEBUG = $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/src/Utils.o $(OBJDIR_DEBUG)/src/TSV.o $(OBJDIR_DEBUG)/src/MetaSpades.o $(OBJDIR_DEBUG)/src/Spades.o $(OBJDIR_DEBUG)/src/KmerStream.o $(OBJDIR_DEBUG)/src/GCSplit.o $(OBJDIR_DEBUG)/src/Fastq.o $(OBJDIR_DEBUG)/src/FastaFile.o $(OBJDIR_DEBUG)/src/Fasta.o $(OBJDIR_DEBUG)/src/Arguments.o
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/src/Utils.o $(OBJDIR_RELEASE)/src/TSV.o $(OBJDIR_RELEASE)/src/MetaSpades.o $(OBJDIR_RELEASE)/src/KmerStream.o $(OBJDIR_RELEASE)/src/GCSplit.o $(OBJDIR_RELEASE)/src/Fastq.o $(OBJDIR_RELEASE)/src/FastaFile.o $(OBJDIR_RELEASE)/src/Fasta.o $(OBJDIR_RELEASE)/src/Arguments.o
+OBJ_RELEASE = $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/src/Utils.o $(OBJDIR_RELEASE)/src/TSV.o $(OBJDIR_RELEASE)/src/MetaSpades.o $(OBJDIR_RELEASE)/src/Spades.o $(OBJDIR_RELEASE)/src/KmerStream.o $(OBJDIR_RELEASE)/src/GCSplit.o $(OBJDIR_RELEASE)/src/Fastq.o $(OBJDIR_RELEASE)/src/FastaFile.o $(OBJDIR_RELEASE)/src/Fasta.o $(OBJDIR_RELEASE)/src/Arguments.o
 
 all: debug release
 
@@ -66,6 +66,9 @@ $(OBJDIR_DEBUG)/src/TSV.o: src/TSV.cpp
 
 $(OBJDIR_DEBUG)/src/MetaSpades.o: src/MetaSpades.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/MetaSpades.cpp -o $(OBJDIR_DEBUG)/src/MetaSpades.o
+
+$(OBJDIR_DEBUG)/src/Spades.o: src/Spades.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/Spades.cpp -o $(OBJDIR_DEBUG)/src/Spades.o
 
 $(OBJDIR_DEBUG)/src/KmerStream.o: src/KmerStream.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/KmerStream.cpp -o $(OBJDIR_DEBUG)/src/KmerStream.o
@@ -114,6 +117,9 @@ $(OBJDIR_RELEASE)/src/TSV.o: src/TSV.cpp
 
 $(OBJDIR_RELEASE)/src/MetaSpades.o: src/MetaSpades.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/MetaSpades.cpp -o $(OBJDIR_RELEASE)/src/MetaSpades.o
+
+$(OBJDIR_RELEASE)/src/Spades.o: src/Spades.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/Spades.cpp -o $(OBJDIR_RELEASE)/src/Spades.o
 
 $(OBJDIR_RELEASE)/src/KmerStream.o: src/KmerStream.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/KmerStream.cpp -o $(OBJDIR_RELEASE)/src/KmerStream.o
