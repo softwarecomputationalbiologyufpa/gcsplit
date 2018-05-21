@@ -13,7 +13,7 @@ To install GCSplit and its dependencies, type `cd gcsplit`, `bash install.sh` an
 To see the usage just type `gcsplit`
 
 ~~~
-GCSplit v1.2
+GCSplit v1.3
 
 A software to partition paired FASTQ files
 
