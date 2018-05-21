@@ -20,8 +20,10 @@ class Arguments {
 		string reverse;
         string single;
 		int partitions;
+		bool skipkmerstream;
 		int numberOfKmers;
         vector<int> bestKmers;
+        string selectedKmers;
         bool wholeDataset;
         bool ionTorrent;
         bool meta;
@@ -39,6 +41,9 @@ class Arguments {
 		int getNumberOfKmers();
         void setBestKmers(vector<int> bestKmers);
         vector<int> getBestKmers();
+        bool skipKmerStream();
+        void setSelectedKmers(string selectedKmers);
+        string getSelectedKmers();
         int getThreads();
         bool useWholeDataset();
         bool isIonTorrent();

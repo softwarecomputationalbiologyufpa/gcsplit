@@ -13,8 +13,10 @@ int main(int argc, char *argv[]) {
     Arguments arguments(argc, argv);
 
     if(arguments.areReady()) {
-        KmerStream kmerStream(arguments);
-        kmerStream.getBestKmers(arguments);
+		if(!arguments.skipKmerStream()) {
+			KmerStream kmerStream(arguments);
+			kmerStream.getBestKmers(arguments);
+		}
         GCSplit gcsplit(arguments);
         gcsplit.split();
         if(arguments.isMeta()) {

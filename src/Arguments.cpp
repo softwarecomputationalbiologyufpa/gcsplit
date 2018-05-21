@@ -5,20 +5,22 @@ void displayHelp(char *argv[]) {
     cerr << "A software to partition paired FASTQ files" << endl << endl;
 	cerr << "Usage: " << argv[0] << " [options] -o <output_dir> " << endl << endl;
 	cerr << "Basic options:" << endl;
-	cerr << "    -o/--output <output_dir>    Folder to store all the files generated during the assembly (required)." << endl;
-    cerr << "    -p/--partitions <int>       Number of partitions [default: 16]" << endl;
-    cerr << "    -w/--whole                  Use whole dataset to merge [default: off]" << endl;
-    cerr << "    --iontorrent                This flag is required for IonTorrent data." << endl;
-    cerr << "    --meta                      This flag is required for metagenomic datasets." << endl;
-    cerr << "    -h/--help                   Prints this usage message." << endl;
-    cerr << "    -v/--version                Prints version info" << endl << endl;
+	cerr << "    -o/--output <output_dir>           Folder to store all the files generated during the assembly (required)." << endl;
+    cerr << "    -p/--partitions <int>              Number of partitions [default: 16]" << endl;
+    cerr << "    -w/--whole                         Use whole dataset to merge [default: off]" << endl;
+    cerr << "    --iontorrent                       This flag is required for IonTorrent data." << endl;
+    cerr << "    --meta                             This flag is required for metagenomic datasets." << endl;
+    cerr << "    -h/--help                          Prints this usage message." << endl;
+    cerr << "    -v/--version                       Prints version info" << endl << endl;
 	cerr << "Input data:" << endl;
-	cerr << "    -f/--forward <filename>     File with forward paired-end reads." << endl;
-	cerr << "    -r/--reverse <filename>     File with reverse paired-end reads." << endl;
-    cerr << "    -s/--single <filename>      File with unpaired reads." << endl << endl;
+	cerr << "    -f/--forward <filename>            File with forward paired-end reads." << endl;
+	cerr << "    -r/--reverse <filename>            File with reverse paired-end reads." << endl;
+    cerr << "    -s/--single <filename>             File with unpaired reads." << endl << endl;
     cerr << "Advanced options:" << endl;
-    cerr << "    -t/--threads <int>          Number of threads [default: 4]" << endl;
-    cerr << "    -k/--kmers <int>            Number of kmers to run the assembly [default: 3]" << endl << endl;
+    cerr << "    -t/--threads <int>                 Number of threads [default: 4]" << endl;
+    cerr << "    --skip-kmerstream <int,int,...>    Skip KmerStream and run SPAdes or MetaSPAdes with specified k-mer(s)" << endl;
+    cerr << "                                       K-mer value(s) must be odd and less than 128" << endl;
+    cerr << "    -k/--kmers <int>                   Number of best k-mers estimated by KmerStream for the assembly [default: 3]" << endl << endl;
 	cerr << "Please, report bugs to: miranda.fmm@gmail.com" << endl;
 	cerr << "Software homepage: <https://github.com/mirand863/gcsplit>" << endl << endl;
 }
@@ -41,6 +43,8 @@ Arguments::Arguments(int argc, char *argv[]) {
     reverse = "";
     partitions = 16;
     numberOfKmers = 3;
+    skipkmerstream = false;
+    selectedKmers = "";
     threads = 4;
     wholeDataset = false;
     ionTorrent = false;
@@ -84,6 +88,10 @@ Arguments::Arguments(int argc, char *argv[]) {
 			continue;
 		} else if (argument == "--meta") {
 			meta = true;
+			continue;
+		} else if (argument == "--skip-kmerstream") {
+			skipkmerstream = true;
+			selectedKmers = argv[i + 1];
 			continue;
 		}
 	}
@@ -136,6 +144,18 @@ void Arguments::setBestKmers(vector<int> bestKmers) {
 
 vector<int> Arguments::getBestKmers() {
     return bestKmers;
+}
+
+bool Arguments::skipKmerStream() {
+	return skipkmerstream;
+}
+
+void Arguments::setSelectedKmers(string selectedKmers) {
+	this->selectedKmers = selectedKmers;
+}
+
+string Arguments::getSelectedKmers() {
+	return selectedKmers;
 }
 
 int Arguments::getThreads() {

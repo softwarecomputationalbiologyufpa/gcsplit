@@ -10,6 +10,8 @@ Spades::Spades(Arguments &arguments) {
     this->ionTorrent = arguments.isIonTorrent();
     this->wholeDataset = arguments.useWholeDataset();
     this->outputdir = arguments.getOutputDir();
+    this->skipkmerstream = arguments.skipKmerStream();
+    this->selectedKmers = arguments.getSelectedKmers();
     gcsplitInput = outputdir + "/gcsplit/slice_";
     spadesInput = outputdir + "/spades/slice_";
     utils.createDir(outputdir + "/spades");
@@ -33,10 +35,14 @@ void Spades::assembleSlices() {
         }
         command << "-t " << threads << " \\" << endl;
         command << "-k ";
-        for(unsigned int j = 0; j < kmers.size() - 1; j++) {
-            command << kmers[j] << ",";
-        }
-        command << kmers[kmers.size() - 1] << " \\" << endl;
+        if(!skipkmerstream) {
+			for(unsigned int j = 0; j < kmers.size() - 1; j++) {
+				command << kmers[j] << ",";
+			}
+			command << kmers[kmers.size() - 1] << " \\" << endl;
+		} else {
+			command << selectedKmers << " \\" << endl;
+		}
         command << "-o " << outputdir << "/spades/slice_" << i << endl;
         cerr << command.str() << endl;
         returnValue = system(command.str().c_str());

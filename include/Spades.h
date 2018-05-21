@@ -22,6 +22,8 @@ class Spades {
         int threads;
         int partitions;
         vector<int> kmers;
+        bool skipkmerstream;
+        string selectedKmers;
         string gcsplitInput;
         string spadesInput;
         string outputdir;
