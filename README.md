@@ -17,7 +17,7 @@ GCSplit v1.2
 
 A software to partition paired FASTQ files
 
-Usage: ./bin/Debug/gcsplit [options] -o <output_dir> 
+Usage: gcsplit [options] -o <output_dir> 
 
 Basic options:
     -o/--output <output_dir>    Folder to store all the files generated during the assembly (required).
@@ -35,6 +35,8 @@ Input data:
 Advanced options:
     -t/--threads <int>          Number of threads [default: 4]
     -k/--kmers <int>            Number of kmers to run the assembly [default: 3]
+    -m/--memory <int>           Set memory limit for SPAdes in Gb [default: 250]
+    --only-assembler            Runs SPAdes on assembly mode only
 
 Please, report bugs to: miranda.fmm@gmail.com
 Software homepage: <https://github.com/mirand863/gcsplit>
