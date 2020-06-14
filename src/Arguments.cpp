@@ -17,7 +17,9 @@ void displayHelp(char *argv[]) {
     cerr << "    -s/--single <filename>      File with unpaired reads." << endl << endl;
     cerr << "Advanced options:" << endl;
     cerr << "    -t/--threads <int>          Number of threads [default: 4]" << endl;
-    cerr << "    -k/--kmers <int>            Number of kmers to run the assembly [default: 3]" << endl << endl;
+    cerr << "    -k/--kmers <int>            Number of kmers to run the assembly [default: 3]" << endl;
+    cerr << "    -m/--memory <int>           Set memory limit for SPAdes in Gb [default: 250]" << endl;
+    cerr << "    --only-assembler            Runs SPAdes on assembly mode only" << endl << endl;
 	cerr << "Please, report bugs to: miranda.fmm@gmail.com" << endl;
 	cerr << "Software homepage: <https://github.com/mirand863/gcsplit>" << endl << endl;
 }
@@ -43,6 +45,8 @@ Arguments::Arguments(int argc, char *argv[]) {
     threads = 4;
     wholeDataset = false;
     ionTorrent = false;
+    memoryLimit = 250;
+    onlyAssembler = false;
     outputDir = "";
 
 	for(int i = 1; i < argc; i++) {
@@ -80,7 +84,13 @@ Arguments::Arguments(int argc, char *argv[]) {
 		} else if (argument == "--iontorrent") {
 			ionTorrent = true;
 			continue;
-		}
+        } else if (argument == "--memory" || argument == "-m") {
+            memoryLimit = atoi(argv[i + 1]);
+            continue;
+		} else if (argument == "--only-assembler") {
+            onlyAssembler = true;
+            continue;
+        }
 	}
     if(help) {
         displayHelp(argv);
@@ -143,6 +153,14 @@ bool Arguments::useWholeDataset() {
 
 bool Arguments::isIonTorrent() {
     return ionTorrent;
+}
+
+int Arguments::getMemoryLimit() {
+    return memoryLimit;
+}
+
+bool Arguments::isOnlyAssembler() {
+    return onlyAssembler;
 }
 
 string Arguments::getOutputDir() {

@@ -18,6 +18,8 @@ class MetaSpades {
         string reverse;
         string single;
         bool ionTorrent;
+        int memoryLimit;
+        bool onlyAssembler;
         bool wholeDataset;
         int threads;
         int partitions;

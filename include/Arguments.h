@@ -24,6 +24,8 @@ class Arguments {
         vector<int> bestKmers;
         bool wholeDataset;
         bool ionTorrent;
+        int memoryLimit;
+        bool onlyAssembler;
         int threads;
         string outputDir;
 	public:
@@ -41,6 +43,8 @@ class Arguments {
         int getThreads();
         bool useWholeDataset();
         bool isIonTorrent();
+        int getMemoryLimit();
+        bool isOnlyAssembler();
         string getOutputDir();
 };
 

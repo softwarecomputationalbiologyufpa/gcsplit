@@ -8,6 +8,8 @@ MetaSpades::MetaSpades(Arguments &arguments) {
     this->partitions = arguments.getPartitions();
     this->kmers = arguments.getBestKmers();
     this->ionTorrent = arguments.isIonTorrent();
+    this->memoryLimit = arguments.getMemoryLimit();
+    this->onlyAssembler = arguments.isOnlyAssembler();
     this->wholeDataset = arguments.useWholeDataset();
     this->outputdir = arguments.getOutputDir();
     gcsplitInput = outputdir + "/gcsplit/slice_";
@@ -31,6 +33,10 @@ void MetaSpades::assembleSlices() {
         if(ionTorrent) {
             command << "--iontorrent \\" << endl;
         }
+        if(onlyAssembler) {
+            command << "--only-assembler \\" << endl;
+        }
+        command << "-m " << memoryLimit << " \\" << endl;
         command << "-t " << threads << " \\" << endl;
         command << "-k ";
         for(unsigned int j = 0; j < kmers.size() - 1; j++) {
@@ -80,6 +86,7 @@ void MetaSpades::mergeAssemblies() {
         command << "--s1 " << metaspadesInput << smallerN50[i - 1] << "/contigs.fasta \\" << endl;
     }
     command << "--trusted-contigs " << metaspadesInput << largestN50 << "/contigs.fasta \\" << endl;
+    command << "-m " << memoryLimit << " \\" << endl;
     command << "--only-assembler \\" << endl;
     command << "-t " << threads << " \\" << endl;
     command << "-k ";
@@ -120,6 +127,10 @@ void MetaSpades::mergeAssembliesWithWholeDataset() {
     if(ionTorrent) {
         command << "--iontorrent \\" << endl;
     }
+    if(onlyAssembler) {
+        command << "--only-assembler \\" << endl;
+    }
+    command << "-m " << memoryLimit << " \\" << endl;
     command << "--trusted-contigs " << outputdir << "/metaspades/cat.fasta \\" << endl;
     command << "--only-assembler \\" << endl;
     command << "-t " << threads << " \\" << endl;
